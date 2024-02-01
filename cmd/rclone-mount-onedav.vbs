@@ -1,0 +1,1 @@
+CreateObject("WScript.Shell").Run "cmd /c D:\Repositories\VS_Code\cmd\rclone-mount-onedav.bat",0
