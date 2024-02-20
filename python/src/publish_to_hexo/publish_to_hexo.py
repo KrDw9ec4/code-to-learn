@@ -1,3 +1,4 @@
+import subprocess
 import sys
 import os
 import yaml
@@ -10,7 +11,9 @@ config_path = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'config.
 # 检查 config.yml 是否存在，不存在则生成
 if not os.path.exists(config_path):
     with open(config_path, 'w') as f:
-        yaml.dump({'post_path': str(input("请输入要文章的存储路径："))}, f)
+        yaml.dump({'hexo_path': str(input("请输入 hexo 的工作路径："))}, f)
+        yaml.dump({'post_path': str(input("请输入文章的存储路径（source/_post）："))}, f)
+        yaml.dump({'deploy_command': str(input("请输入 hexo 的部署命令："))}, f)
 
 # 读取 config.yml
 with open(config_path, 'r') as f:
@@ -38,3 +41,11 @@ dest_file_path = os.path.join(dest_path, file_name)
 post = fm.merge2post(fm.dict2yaml(kvdict), content)
 with open(dest_file_path, 'w', encoding='utf-8') as f:
     f.write(post)
+
+# 确认是否部署
+if str(input("是否部署到 hexo？（y/n）：")).lower() == "y":
+    os.chdir(config['hexo_path'])
+    subprocess.run(config['deploy_command'], shell=True)
+
+# 任意键退出
+input("按任意键退出")
