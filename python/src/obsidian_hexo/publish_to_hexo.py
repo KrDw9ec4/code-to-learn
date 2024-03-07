@@ -36,7 +36,7 @@ if "publish" in kvdict["tags"]:
     fm.updateValue(kvdict, "tags", "publish", "DELETE")
 
 # 生成并创建新的文件
-file_name = str(input("请输入要保存的文件名："))
+file_name = str(input("请输入要保存的文件名（请带上.md）："))
 dest_file_path = os.path.join(dest_path, file_name)
 post = fm.merge2post(fm.dict2yaml(kvdict), content)
 with open(dest_file_path, 'w', encoding='utf-8') as f:
