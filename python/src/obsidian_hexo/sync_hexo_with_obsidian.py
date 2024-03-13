@@ -56,10 +56,15 @@ obsidian_note_frontmatter, obsidian_note_content = fm.parser(obsidian_note_path)
 hexo_blog_kvdict = fm.yaml2dict(hexo_blog_frontmatter)
 obsidian_note_kvdict = fm.yaml2dict(obsidian_note_frontmatter)
 
-# 合并 content 正文内容
-
-TextMerger = tm(hexo_blog_content, obsidian_note_content)
-mergedText = TextMerger.merge()
+# 合并 content 正文内容，三种模式：hexo 优先、obsidian 优先、合并
+match input("优先合并（hexo/obsidian/SYNC）：").lower():
+    case 'hexo':
+        mergedText = hexo_blog_content
+    case 'obsidian':
+        mergedText = obsidian_note_content
+    case _:
+        TextMerger = tm(hexo_blog_content, obsidian_note_content)
+        mergedText = TextMerger.merge()
 
 # 是否写入 hexo 和 Obsidian
 modified_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
