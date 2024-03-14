@@ -67,14 +67,8 @@ class TextMerger:
                 right_index += 1
                 return left_index, right_index
             case _:
-                print("无法识别的输入，可选的选项：L/R/LA/LD/RA/RD/I")
-                print("L：选择左边的内容。")
-                print("R：选择右边的内容。")
-                print("LA：左边增加了一行且选择左边的内容。")
-                print("LD：左边删除了一行且选择左边的内容。")
-                print("RA：右边增加了一行且选择右边的内容。")
-                print("RD：右边删除了一行且选择右边的内容。")
-                print("I：手动输入内容。")
+                self.print_help()
+                print("\n无法识别的输入，可选的选项：L/R/LA/LD/RA/RD/I")
 
     def handle_out_range(self, left_index, right_index):
         if left_index >= len(self.left_lines):
@@ -90,3 +84,46 @@ class TextMerger:
         user_input_list = [eval(i) for i in input("输入要添加的行的索引（空格分隔）：").split()]
         for i in user_input_list:
             self.merged_lines.append(lines[i])
+
+    def print_help():
+
+        abbr_list = ['l', 'r', 'la', 'ld', 'ra', 'rd', 'i']
+
+        method_dict = {
+            'l': 'LEFT',
+            'r': 'RIGHT',
+            'la': 'LEFT ADD',
+            'ld': 'LEFT DELETE',
+            'ra': 'RIGHT ADD',
+            'rd': 'RIGHT DELETE',
+            'i': 'INPUT',
+        }
+
+        description_dict = {
+            'l': '选择左边的内容。',
+            'r': '选择右边的内容。',
+            'la': '左边增加了一行且选择左边的内容。',
+            'ld': '左边删除了一行且选择左边的内容。',
+            'ra': '右边增加了一行且选择右边的内容。',
+            'rd': '右边删除了一行且选择右边的内容。',
+            'i': '手动输入内容。',
+        }
+
+        width = 54
+        abbr_width = 6
+        method_width = 16
+        description_width = width - abbr_width - method_width
+
+        header_fmt = f"{{:<{abbr_width}}}{{:<{method_width}}}{{:<{description_width}}}"
+        fmt = f"{{:<{abbr_width}}}{{:<{method_width}}}{{:<{description_width}}}"
+
+        print('=' * width)
+
+        print(header_fmt.format('ABBR', 'METHOD', 'DESCRIPTION'))
+
+        print('-' * width)
+
+        for abbr in abbr_list:
+            print(fmt.format(abbr, method_dict[abbr], description_dict[abbr]))
+
+        print('=' * width)
