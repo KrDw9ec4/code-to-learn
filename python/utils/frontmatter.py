@@ -46,7 +46,7 @@ def yaml2dict(string):
                 else:
                     kvdict[key] = []
             elif key:
-                if match := re.match(r'^\s*-\s*(?:\"|\')(.*)(?:\"|\')$', line):
+                if match := re.match(r'^\s*-\s*(?:\"|\')?(.*)(?:\"|\')?$', line):
                     kvdict[key].append(match.group(1))
     return kvdict
 
@@ -66,7 +66,7 @@ def dict2yaml(dict):
     for key, value in dict.items():
         yaml_str += yaml.dump({key: value}, allow_unicode=True, default_style='')
     yaml_str = re.sub(r'(?m)^- ', r'  - ', yaml_str)
-    yaml_str = re.sub(r'\'(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})\'', r'\1', yaml_str)
+    yaml_str = re.sub(r'(?m)(.*?): (?:\"|\')?(.*?)(?:\"|\')?$', r'\1: \2', yaml_str)
     return yaml_str
 
 
